@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file into the container
-COPY target/employeeManagement-0.0.1-SNAPSHOT.jar employeeManagement.jar
+COPY target/*.jar app.jar
 
 # Run the application
 CMD ["java", "-jar", "app.jar"]
