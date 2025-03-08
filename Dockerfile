@@ -1,8 +1,13 @@
+# First stage: Build the application
 FROM maven:3.8.5-openjdk-17 AS build
-COPY ..
+WORKDIR /app
+COPY pom.xml .
+COPY src/ ./src/
 RUN mvn clean package -DskipTests
 
+# Second stage: Create a smaller image with only the built jar
 FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/employeeManagement-0.0.1-SNAPSHOT.jar employee.jar
+WORKDIR /app
+COPY --from=build /app/target/employeeManagement-0.0.1-SNAPSHOT.jar employee.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","employee.jar"]
+ENTRYPOINT ["java", "-jar", "employee.jar"]
